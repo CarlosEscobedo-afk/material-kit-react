@@ -1,0 +1,26 @@
+name: Docker Build and Push
+
+on:
+  push:
+    branches:
+      - main # Cambia "main" al nombre de tu rama principal si es diferente
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build the Docker image
+        run: docker build -t carlosesc/dashboard:latest .
+
+      - name: Login to Docker Hub (o tu registro de contenedores preferido)
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push the Docker image
+        run: docker push carlosesc/dashboard:latest
